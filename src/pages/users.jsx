@@ -29,20 +29,22 @@ export default function UsersPage(props) {
     key: 'avatar_url',
     title: '头像',
     render: (url, row) => <Avatar className="w-10 h-10">
-          <AvatarImage src={url} alt={row.nickName} />
-          <AvatarFallback>{row.nickName?.charAt(0) || 'U'}</AvatarFallback>
+          <AvatarImage src={url} alt={row.nickName || row.nickname || '用户'} />
+          <AvatarFallback>{(row.nickName || row.nickname || '用户').charAt(0)}</AvatarFallback>
         </Avatar>
   }, {
     key: 'nickName',
     title: '昵称',
-    sortable: true
+    sortable: true,
+    render: (value, row) => value || row.nickname || row.name || '未设置昵称'
   }, {
     key: 'openid',
     title: '用户ID',
     sortable: true
   }, {
     key: 'email',
-    title: '邮箱'
+    title: '邮箱',
+    render: value => value || '未设置邮箱'
   }, {
     key: 'role',
     title: '角色',
@@ -96,6 +98,7 @@ export default function UsersPage(props) {
 
       // 查询分页数据
       const result = await collection.orderBy('created_at', 'desc').skip((pagination.current - 1) * 10).limit(10).get();
+      console.log('用户数据:', result.data); // 调试日志
       setUsers(result.data || []);
       setPagination(prev => ({
         ...prev,
