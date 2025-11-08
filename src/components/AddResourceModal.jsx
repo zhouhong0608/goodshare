@@ -96,14 +96,11 @@ export function AddResourceModal({
   };
   const saveResourceToDatabase = async resourceData => {
     try {
-      // 使用数据源API保存到resources数据模型
-      const result = await $w.cloud.callDataSource({
-        dataSourceName: 'resources',
-        methodName: 'wedaCreateV2',
-        params: {
-          data: resourceData
-        }
-      });
+      // 使用云开发原生实例保存到数据库
+      const tcb = await $w.cloud.getCloudInstance();
+      const db = tcb.database();
+      const collection = db.collection('resources');
+      const result = await collection.add(resourceData);
       return result.id;
     } catch (error) {
       console.error('保存资源数据失败:', error);
