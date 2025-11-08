@@ -1,7 +1,7 @@
 // @ts-ignore;
 import React, { useState, useEffect } from 'react';
 // @ts-ignore;
-import { Avatar, AvatarFallback, AvatarImage, Badge, Button, useToast } from '@/components/ui';
+import { Avatar, AvatarFallback, AvatarImage, Badge, Button, useToast, Input } from '@/components/ui';
 // @ts-ignore;
 import { Search, Filter, MoreHorizontal, Power, PowerOff } from 'lucide-react';
 
@@ -15,8 +15,10 @@ export default function UsersPage(props) {
     toast
   } = useToast();
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [updatingUserId, setUpdatingUserId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const [pagination, setPagination] = useState({
     current: 1,
     pages: 1,
@@ -84,6 +86,10 @@ export default function UsersPage(props) {
   useEffect(() => {
     loadUsers();
   }, [pagination.current]);
+  useEffect(() => {
+    // 当搜索词或用户数据变化时，执行搜索过滤
+    applySearch();
+  }, [searchTerm, users]);
   const loadUsers = async () => {
     setLoading(true);
     try {
@@ -117,6 +123,28 @@ export default function UsersPage(props) {
     } finally {
       setLoading(false);
     }
+  };
+  const applySearch = () => {
+    if (!searchTerm.trim()) {
+      setFilteredUsers(users);
+      return;
+    }
+    const searchLower = searchTerm.toLowerCase();
+    const filtered = users.filter(user => {
+      // 搜索昵称
+      const nickName = (user.nickName || user.nickname || '').toLowerCase();
+      // 搜索用户ID
+      const openid = (user.openid || '').toLowerCase();
+      // 搜索邮箱
+      const email = (user.email || '').toLowerCase();
+      // 搜索角色
+      const role = (user.role || '').toLowerCase();
+      return nickName.includes(searchLower) || openid.includes(searchLower) || email.includes(searchLower) || role.includes(searchLower);
+    });
+    setFilteredUsers(filtered);
+  };
+  const handleSearch = value => {
+    setSearchTerm(value);
   };
   const toggleUserStatus = async user => {
     setUpdatingUserId(user._id);
@@ -192,7 +220,23 @@ export default function UsersPage(props) {
           <Button>添加用户</Button>
         </div>
 
-        <DataTable data={users} columns={columns} onSort={handleSort} onRowClick={handleRowClick} pagination={pagination} onPageChange={handlePageChange} />
+        {/* 搜索栏 */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <div className="flex items-center space-x-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Input type="text" placeholder="搜索用户昵称、用户ID、邮箱或角色..." value={searchTerm} onChange={e => handleSearch(e.target.value)} className="pl-10" />
+            </div>
+            {searchTerm && <Button variant="outline" onClick={() => handleSearch('')}>
+                清除搜索
+              </Button>}
+          </div>
+          {searchTerm && <div className="mt-2 text-sm text-gray-600">
+              找到 {filteredUsers.length} 个匹配的用户
+            </div>}
+        </div>
+
+        <DataTable data={filteredUsers} columns={columns} onSort={handleSort} onRowClick={handleRowClick} pagination={pagination} onPageChange={handlePageChange} />
       </div>
     </AdminLayout>;
 }
