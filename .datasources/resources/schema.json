@@ -1,0 +1,94 @@
+
+{
+  "name": "resources",
+  "title": "资源管理",
+  "schemas": [
+    {
+      "name": "title",
+      "title": "资源标题",
+      "type": "String"
+    },
+    {
+      "name": "description",
+      "title": "资源描述",
+      "type": "MultiLineString"
+    },
+    {
+      "name": "category_id",
+      "title": "分类ID",
+      "type": "String"
+    },
+    {
+      "name": "cover_url",
+      "title": "封面图片URL",
+      "type": "Url"
+    },
+    {
+      "name": "cover_file_id",
+      "title": "封面文件ID",
+      "type": "String"
+    },
+    {
+      "name": "file_url",
+      "title": "资源文件URL",
+      "type": "Url"
+    },
+    {
+      "name": "file_id",
+      "title": "资源文件ID",
+      "type": "String"
+    },
+    {
+      "name": "detail_images",
+      "title": "详情图片",
+      "type": "Array",
+      "items": {
+        "type": "Url"
+      }
+    },
+    {
+      "name": "detail_file_ids",
+      "title": "详情文件ID",
+      "type": "Array",
+      "items": {
+        "type": "String"
+      }
+    },
+    {
+      "name": "file_type",
+      "title": "文件类型",
+      "type": "String"
+    },
+    {
+      "name": "file_size",
+      "title": "文件大小",
+      "type": "Number"
+    },
+    {
+      "name": "download_count",
+      "title": "下载次数",
+      "type": "Number"
+    },
+    {
+      "name": "favorite_count",
+      "title": "收藏次数",
+      "type": "Number"
+    },
+    {
+      "name": "hot_score",
+      "title": "热度分数",
+      "type": "Number"
+    },
+    {
+      "name": "is_recommended",
+      "title": "是否推荐",
+      "type": "Boolean"
+    },
+    {
+      "name": "status",
+      "title": "状态",
+      "type": "String"
+    }
+  ]
+}
+  

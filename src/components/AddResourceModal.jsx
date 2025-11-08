@@ -10,7 +10,8 @@ export function AddResourceModal({
   isOpen,
   onClose,
   onSuccess,
-  categories
+  categories,
+  $w
 }) {
   const {
     toast
@@ -69,13 +70,41 @@ export function AddResourceModal({
     setDetailImages(prev => prev.filter((_, i) => i !== index));
   };
   const uploadToCloudStorage = async (file, path) => {
-    // 这里需要实现云存储上传逻辑
-    // 由于是示例，我们返回一个模拟的 URL
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(`https://cloud-storage.example.com/${path}/${file.name}`);
-      }, 1000);
-    });
+    try {
+      const tcb = await $w.cloud.getCloudInstance();
+      const result = await tcb.uploadFile({
+        cloudPath: path,
+        filePath: file
+      });
+      return result.fileID;
+    } catch (error) {
+      console.error('云存储上传失败:', error);
+      throw new Error('文件上传失败');
+    }
+  };
+  const getTempFileURL = async fileID => {
+    try {
+      const tcb = await $w.cloud.getCloudInstance();
+      const result = await tcb.getTempFileURL({
+        fileList: [fileID]
+      });
+      return result.fileList[0].tempFileURL;
+    } catch (error) {
+      console.error('获取文件链接失败:', error);
+      return fileID; // 返回 fileID 作为备用
+    }
+  };
+  const saveResourceToDatabase = async resourceData => {
+    try {
+      const tcb = await $w.cloud.getCloudInstance();
+      const db = tcb.database();
+      const collection = db.collection('resources');
+      const result = await collection.add(resourceData);
+      return result.id;
+    } catch (error) {
+      console.error('保存资源数据失败:', error);
+      throw new Error('保存资源数据失败');
+    }
   };
   const onSubmit = async data => {
     if (!coverImage || !resourceFile) {
@@ -94,16 +123,22 @@ export function AddResourceModal({
       const timestamp = Date.now();
 
       // 上传封面图片
-      const coverUrl = await uploadToCloudStorage(coverImage, `${categoryName}/covers/${timestamp}`);
+      const coverPath = `${categoryName}/covers/${timestamp}_${coverImage.name}`;
+      const coverFileID = await uploadToCloudStorage(coverImage, coverPath);
+      const coverUrl = await getTempFileURL(coverFileID);
 
       // 上传资源文件
-      const resourceUrl = await uploadToCloudStorage(resourceFile, `${categoryName}/files/${timestamp}`);
+      const resourcePath = `${categoryName}/files/${timestamp}_${resourceFile.name}`;
+      const resourceFileID = await uploadToCloudStorage(resourceFile, resourcePath);
+      const resourceUrl = await getTempFileURL(resourceFileID);
 
       // 上传详情图片
       const detailUrls = [];
       for (let i = 0; i < detailImages.length; i++) {
-        const url = await uploadToCloudStorage(detailImages[i], `${categoryName}/details/${timestamp}_${i}`);
-        detailUrls.push(url);
+        const detailPath = `${categoryName}/details/${timestamp}_${i}_${detailImages[i].name}`;
+        const detailFileID = await uploadToCloudStorage(detailImages[i], detailPath);
+        const detailUrl = await getTempFileURL(detailFileID);
+        detailUrls.push(detailUrl);
       }
 
       // 创建资源记录
@@ -112,8 +147,11 @@ export function AddResourceModal({
         description: data.description,
         category_id: data.category_id,
         cover_url: coverUrl,
+        cover_file_id: coverFileID,
         file_url: resourceUrl,
+        file_id: resourceFileID,
         detail_images: detailUrls,
+        detail_file_ids: detailImages.map((_, i) => `${categoryName}/details/${timestamp}_${i}_${detailImages[i].name}`),
         file_type: data.file_type,
         file_size: data.file_size,
         download_count: 0,
@@ -121,14 +159,16 @@ export function AddResourceModal({
         hot_score: 0,
         is_recommended: false,
         status: 'active',
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       };
 
-      // 这里应该调用云函数或数据库 API 保存数据
-      console.log('保存资源数据:', resourceData);
+      // 保存到数据库
+      const resourceId = await saveResourceToDatabase(resourceData);
+      console.log('资源保存成功，ID:', resourceId);
       toast({
         title: "添加成功",
-        description: "资源已成功添加"
+        description: "资源已成功添加到数据库"
       });
       onSuccess?.();
       handleClose();

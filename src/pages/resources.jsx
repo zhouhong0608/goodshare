@@ -38,14 +38,8 @@ export default function ResourcesPage(props) {
     key: 'category_id',
     title: '分类',
     render: categoryId => {
-      const categoryMap = {
-        '74337284690763cc01dfbe323f7861bd': '编程开发',
-        'a2352464690763cc01de692659129de4': '设计素材',
-        'def9fa84690763cc01de0a20161409cf': '学习资料',
-        'cc84495d690763cc01dc22fd0f18f94b': '工具软件',
-        '5d261094690763cc01e1dd1b3ca3ad35': '多媒体'
-      };
-      return categoryMap[categoryId] || '未知分类';
+      const category = categories.find(cat => cat._id === categoryId);
+      return category ? category.name : '未知分类';
     }
   }, {
     key: 'file_type',
@@ -54,19 +48,22 @@ export default function ResourcesPage(props) {
   }, {
     key: 'file_size',
     title: '文件大小',
-    render: size => `${(size / 1024 / 1024).toFixed(2)} MB`
+    render: size => size ? `${(size / 1024 / 1024).toFixed(2)} MB` : '-'
   }, {
     key: 'download_count',
     title: '下载次数',
-    sortable: true
+    sortable: true,
+    render: count => count || 0
   }, {
     key: 'favorite_count',
     title: '收藏次数',
-    sortable: true
+    sortable: true,
+    render: count => count || 0
   }, {
     key: 'hot_score',
     title: '热度分数',
-    sortable: true
+    sortable: true,
+    render: score => score || 0
   }, {
     key: 'is_recommended',
     title: '推荐',
@@ -83,7 +80,7 @@ export default function ResourcesPage(props) {
     key: 'created_at',
     title: '创建时间',
     sortable: true,
-    render: timestamp => new Date(timestamp).toLocaleDateString()
+    render: timestamp => timestamp ? new Date(timestamp).toLocaleDateString() : '-'
   }];
   const filterOptions = [{
     key: 'title',
@@ -93,22 +90,10 @@ export default function ResourcesPage(props) {
     key: 'category_id',
     label: '分类',
     type: 'select',
-    options: [{
-      value: '74337284690763cc01dfbe323f7861bd',
-      label: '编程开发'
-    }, {
-      value: 'a2352464690763cc01de692659129de4',
-      label: '设计素材'
-    }, {
-      value: 'def9fa84690763cc01de0a20161409cf',
-      label: '学习资料'
-    }, {
-      value: 'cc84495d690763cc01dc22fd0f18f94b',
-      label: '工具软件'
-    }, {
-      value: '5d261094690763cc01e1dd1b3ca3ad35',
-      label: '多媒体'
-    }]
+    options: categories.map(category => ({
+      value: category._id,
+      label: category.name
+    }))
   }, {
     key: 'file_type',
     label: '文件类型',
@@ -128,6 +113,9 @@ export default function ResourcesPage(props) {
     }, {
       value: 'jpg',
       label: '图片'
+    }, {
+      value: 'png',
+      label: 'PNG'
     }]
   }, {
     key: 'status',
@@ -158,7 +146,7 @@ export default function ResourcesPage(props) {
   }, [pagination.current]);
   useEffect(() => {
     applyFilters();
-  }, [resources, filterField, filterValue]);
+  }, [resources, filterField, filterValue, categories]);
   const loadResources = async () => {
     setLoading(true);
     try {
@@ -201,6 +189,11 @@ export default function ResourcesPage(props) {
       setCategories(result.data || []);
     } catch (error) {
       console.error('加载分类数据失败:', error);
+      toast({
+        title: "加载分类失败",
+        description: error.message || "无法加载分类数据",
+        variant: "destructive"
+      });
     }
   };
   const applyFilters = () => {
@@ -252,6 +245,10 @@ export default function ResourcesPage(props) {
   const handleAddSuccess = () => {
     loadResources();
     setShowAddModal(false);
+    toast({
+      title: "操作成功",
+      description: "资源已成功添加"
+    });
   };
   const handleNavigate = pageId => {
     setCurrentPage(pageId);
@@ -273,7 +270,7 @@ export default function ResourcesPage(props) {
         <DataTable data={filteredResources} columns={columns} onSort={handleSort} onFilter={handleFilter} onRowClick={handleRowClick} pagination={pagination} onPageChange={handlePageChange} filterable={true} filterOptions={filterOptions} />
 
         {/* 添加资源弹窗 */}
-        <AddResourceModal isOpen={showAddModal} onClose={() => setShowAddModal(false)} onSuccess={handleAddSuccess} categories={categories} />
+        <AddResourceModal isOpen={showAddModal} onClose={() => setShowAddModal(false)} onSuccess={handleAddSuccess} categories={categories} $w={$w} />
       </div>
     </AdminLayout>;
 }

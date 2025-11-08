@@ -1,0 +1,143 @@
+
+[
+  {
+    "_id": "resource_001",
+    "title": "JavaScript 高级编程指南",
+    "description": "一本深入讲解JavaScript高级特性的编程指南，包含闭包、原型链、异步编程等核心概念。",
+    "category_id": "cat_001",
+    "cover_url": "https://example.com/covers/js-guide.jpg",
+    "cover_file_id": "cloud://env-xxx/categories/covers/1699123456789_js-guide.jpg",
+    "file_url": "https://example.com/files/js-guide.pdf",
+    "file_id": "cloud://env-xxx/categories/files/1699123456789_js-guide.pdf",
+    "detail_images": [
+      "https://example.com/details/js-guide-1.jpg",
+      "https://example.com/details/js-guide-2.jpg"
+    ],
+    "detail_file_ids": [
+      "cloud://env-xxx/categories/details/1699123456789_0_js-guide-1.jpg",
+      "cloud://env-xxx/categories/details/1699123456789_1_js-guide-2.jpg"
+    ],
+    "file_type": "pdf",
+    "file_size": 15728640,
+    "download_count": 1250,
+    "favorite_count": 89,
+    "hot_score": 95,
+    "is_recommended": true,
+    "status": "active",
+    "createdAt": 1699123456789,
+    "updatedAt": 1699123456789
+  },
+  {
+    "_id": "resource_002",
+    "title": "React 实战项目教程",
+    "description": "通过实际项目学习React开发，包含组件设计、状态管理、路由配置等实战内容。",
+    "category_id": "cat_002",
+    "cover_url": "https://example.com/covers/react-tutorial.jpg",
+    "cover_file_id": "cloud://env-xxx/categories/covers/1699123456790_react-tutorial.jpg",
+    "file_url": "https://example.com/files/react-tutorial.zip",
+    "file_id": "cloud://env-xxx/categories/files/1699123456790_react-tutorial.zip",
+    "detail_images": [
+      "https://example.com/details/react-tutorial-1.jpg",
+      "https://example.com/details/react-tutorial-2.jpg",
+      "https://example.com/details/react-tutorial-3.jpg"
+    ],
+    "detail_file_ids": [
+      "cloud://env-xxx/categories/details/1699123456790_0_react-tutorial-1.jpg",
+      "cloud://env-xxx/categories/details/1699123456790_1_react-tutorial-2.jpg",
+      "cloud://env-xxx/categories/details/1699123456790_2_react-tutorial-3.jpg"
+    ],
+    "file_type": "zip",
+    "file_size": 52428800,
+    "download_count": 890,
+    "favorite_count": 67,
+    "hot_score": 78,
+    "is_recommended": false,
+    "status": "active",
+    "createdAt": 1699123456790,
+    "updatedAt": 1699123456790
+  },
+  {
+    "_id": "resource_003",
+    "title": "UI设计系统规范",
+    "description": "完整的UI设计系统规范文档，包含色彩体系、字体规范、组件库设计等内容。",
+    "category_id": "cat_003",
+    "cover_url": "https://example.com/covers/ui-design.jpg",
+    "cover_file_id": "cloud://env-xxx/categories/covers/1699123456791_ui-design.jpg",
+    "file_url": "https://example.com/files/ui-design.pdf",
+    "file_id": "cloud://env-xxx/categories/files/1699123456791_ui-design.pdf",
+    "detail_images": [
+      "https://example.com/details/ui-design-1.jpg"
+    ],
+    "detail_file_ids": [
+      "cloud://env-xxx/categories/details/1699123456791_0_ui-design-1.jpg"
+    ],
+    "file_type": "pdf",
+    "file_size": 31457280,
+    "download_count": 567,
+    "favorite_count": 45,
+    "hot_score": 62,
+    "is_recommended": true,
+    "status": "active",
+    "createdAt": 1699123456791,
+    "updatedAt": 1699123456791
+  },
+  {
+    "_id": "resource_004",
+    "title": "Node.js 后端开发实战",
+    "description": "从零开始学习Node.js后端开发，包含Express框架、数据库操作、API设计等内容。",
+    "category_id": "cat_001",
+    "cover_url": "https://example.com/covers/nodejs-backend.jpg",
+    "cover_file_id": "cloud://env-xxx/categories/covers/1699123456792_nodejs-backend.jpg",
+    "file_url": "https://example.com/files/nodejs-backend.mp4",
+    "file_id": "cloud://env-xxx/categories/files/1699123456792_nodejs-backend.mp4",
+    "detail_images": [
+      "https://example.com/details/nodejs-backend-1.jpg",
+      "https://example.com/details/nodejs-backend-2.jpg"
+    ],
+    "detail_file_ids": [
+      "cloud://env-xxx/categories/details/1699123456792_0_nodejs-backend-1.jpg",
+      "cloud://env-xxx/categories/details/1699123456792_1_nodejs-backend-2.jpg"
+    ],
+    "file_type": "mp4",
+    "file_size": 104857600,
+    "download_count": 432,
+    "favorite_count": 38,
+    "hot_score": 55,
+    "is_recommended": false,
+    "status": "active",
+    "createdAt": 1699123456792,
+    "updatedAt": 1699123456792
+  },
+  {
+    "_id": "resource_005",
+    "title": "Vue.js 组件开发手册",
+    "description": "Vue.js组件开发的完整手册，包含组件通信、生命周期、性能优化等高级技巧。",
+    "category_id": "cat_002",
+    "cover_url": "https://example.com/covers/vuejs-components.jpg",
+    "cover_file_id": "cloud://env-xxx/categories/covers/1699123456793_vuejs-components.jpg",
+    "file_url": "https://example.com/files/vuejs-components.doc",
+    "file_id": "cloud://env-xxx/categories/files/1699123456793_vuejs-components.doc",
+    "detail_images": [
+      "https://example.com/details/vuejs-components-1.jpg",
+      "https://example.com/details/vuejs-components-2.jpg",
+      "https://example.com/details/vuejs-components-3.jpg",
+      "https://example.com/details/vuejs-components-4.jpg"
+    ],
+    "detail_file_ids": [
+      "cloud://env-xxx/categories/details/1699123456793_0_vuejs-components-1.jpg",
+      "cloud://env-xxx/categories/details/1699123456793_1_vuejs-components-2.jpg",
+      "cloud://env-xxx/categories/details/1699123456793_2_vuejs-components-3.jpg",
+      "cloud://env-xxx/categories/details/1699123456793_3_vuejs-components-4.jpg"
+    ],
+    "file_type": "doc",
+    "file_size": 8388608,
+    "download_count": 298,
+    "favorite_count": 26,
+    "hot_score": 41,
+    "is_recommended": false,
+    "status": "inactive",
+    "createdAt": 1699123456793,
+    "updatedAt": 1699123456793
+  }
+]
+  
