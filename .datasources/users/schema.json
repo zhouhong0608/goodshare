@@ -1,0 +1,53 @@
+
+{
+  "name": "users",
+  "title": "用户管理",
+  "schemas": [
+    {
+      "name": "openid",
+      "title": "用户ID",
+      "type": "String"
+    },
+    {
+      "name": "nickname",
+      "title": "昵称",
+      "type": "String"
+    },
+    {
+      "name": "avatar_url",
+      "title": "头像URL",
+      "type": "Url"
+    },
+    {
+      "name": "email",
+      "title": "邮箱",
+      "type": "Email"
+    },
+    {
+      "name": "phone",
+      "title": "手机号",
+      "type": "String"
+    },
+    {
+      "name": "role",
+      "title": "角色",
+      "type": "String"
+    },
+    {
+      "name": "status",
+      "title": "状态",
+      "type": "String"
+    },
+    {
+      "name": "total_downloads",
+      "title": "总下载数",
+      "type": "Number"
+    },
+    {
+      "name": "total_donations",
+      "title": "总捐赠数",
+      "type": "Number"
+    }
+  ]
+}
+  
