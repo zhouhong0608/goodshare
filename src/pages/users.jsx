@@ -236,7 +236,7 @@ export default function UsersPage(props) {
             </div>}
         </div>
 
-        <DataTable data={filteredUsers} columns={columns} onSort={handleSort} onRowClick={handleRowClick} pagination={pagination} onPageChange={handlePageChange} />
+        <DataTable data={filteredUsers} columns={columns} onSort={handleSort} onRowClick={handleRowClick} pagination={pagination} onPageChange={handlePageChange} showSearch={false} />
       </div>
     </AdminLayout>;
 }
