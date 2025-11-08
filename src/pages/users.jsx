@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 // @ts-ignore;
 import { Avatar, AvatarFallback, AvatarImage, Badge, Button, useToast } from '@/components/ui';
 // @ts-ignore;
-import { Search, Filter, MoreHorizontal } from 'lucide-react';
+import { Search, Filter, MoreHorizontal, Power, PowerOff } from 'lucide-react';
 
 import { AdminLayout } from '@/components/AdminLayout';
 import { DataTable } from '@/components/DataTable';
@@ -16,6 +16,7 @@ export default function UsersPage(props) {
   } = useToast();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [updatingUserId, setUpdatingUserId] = useState(null);
   const [pagination, setPagination] = useState({
     current: 1,
     pages: 1,
@@ -69,6 +70,14 @@ export default function UsersPage(props) {
     title: '注册时间',
     sortable: true,
     render: timestamp => timestamp ? new Date(timestamp).toLocaleDateString() : '-'
+  }, {
+    key: 'actions',
+    title: '操作',
+    render: (_, user) => <div className="flex items-center gap-2">
+          <Button size="sm" variant={user.status === 'active' ? 'destructive' : 'default'} onClick={() => toggleUserStatus(user)} disabled={updatingUserId === user._id}>
+            {updatingUserId === user._id ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : user.status === 'active' ? <><PowerOff size={14} className="mr-1" />禁用</> : <><Power size={14} className="mr-1" />启用</>}
+          </Button>
+        </div>
   }];
   useEffect(() => {
     loadUsers();
@@ -104,6 +113,40 @@ export default function UsersPage(props) {
       });
     } finally {
       setLoading(false);
+    }
+  };
+  const toggleUserStatus = async user => {
+    setUpdatingUserId(user._id);
+    try {
+      const tcb = await $w.cloud.getCloudInstance();
+      const db = tcb.database();
+      const collection = db.collection('users');
+
+      // 更新用户状态
+      const newStatus = user.status === 'active' ? 'inactive' : 'active';
+      await collection.doc(user._id).update({
+        status: newStatus,
+        updated_at: new Date().toISOString()
+      });
+
+      // 更新本地状态
+      setUsers(prev => prev.map(u => u._id === user._id ? {
+        ...u,
+        status: newStatus
+      } : u));
+      toast({
+        title: "操作成功",
+        description: `用户已${newStatus === 'active' ? '启用' : '禁用'}`
+      });
+    } catch (error) {
+      console.error('更新用户状态失败:', error);
+      toast({
+        title: "操作失败",
+        description: error.message || "无法更新用户状态",
+        variant: "destructive"
+      });
+    } finally {
+      setUpdatingUserId(null);
     }
   };
   const handleSort = async (key, direction) => {
