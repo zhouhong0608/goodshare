@@ -31,11 +31,13 @@ export default function CategoriesPage(props) {
   }, {
     key: 'sort_order',
     title: '排序',
-    sortable: true
+    sortable: true,
+    render: order => order || 0
   }, {
     key: 'resource_count',
     title: '资源数量',
-    sortable: true
+    sortable: true,
+    render: count => count || 0
   }, {
     key: 'is_active',
     title: '状态',
@@ -46,7 +48,7 @@ export default function CategoriesPage(props) {
     key: 'created_at',
     title: '创建时间',
     sortable: true,
-    render: timestamp => new Date(timestamp).toLocaleDateString()
+    render: timestamp => timestamp ? new Date(timestamp).toLocaleDateString() : '-'
   }, {
     key: 'actions',
     title: '操作',
@@ -65,6 +67,7 @@ export default function CategoriesPage(props) {
   const loadCategories = async () => {
     setLoading(true);
     try {
+      // 使用数据源API查询categories数据模型
       const result = await $w.cloud.callDataSource({
         dataSourceName: 'categories',
         methodName: 'wedaGetRecordsV2',
@@ -92,6 +95,7 @@ export default function CategoriesPage(props) {
   };
   const handleSort = async (key, direction) => {
     try {
+      // 使用数据源API进行排序
       const result = await $w.cloud.callDataSource({
         dataSourceName: 'categories',
         methodName: 'wedaGetRecordsV2',
@@ -99,7 +103,7 @@ export default function CategoriesPage(props) {
           select: {
             $master: true
           },
-          getCount: true,
+          getCount: false,
           pageSize: 100,
           orderBy: [{
             [key]: direction === 'asc' ? 'asc' : 'desc'

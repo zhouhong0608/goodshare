@@ -7,12 +7,19 @@
     "summary": "最新Vue.js 3.0框架完整学习教程，包含Composition API、TypeScript等新特性",
     "category_id": "74337284690763cc01dfbe323f7861bd",
     "cover_url": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=600&fit=crop",
+    "cover_file_id": "cloud://env-xxx/categories/covers/1699123456789_vue3-guide.jpg",
     "thumbnail_url": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=300&h=200&fit=crop",
     "download_url": "https://636c-cloud1-7gz1m3mz6b43f070-1330720714.tcb.qcloud.la/test/%E6%98%8E%E4%BF%A1%E7%89%87.docx?sign=243059ac21dfa98c89a95dba3f061c9f&t=1762152091",
+    "file_url": "https://636c-cloud1-7gz1m3mz6b43f070-1330720714.tcb.qcloud.la/test/%E6%98%8E%E4%BF%A1%E7%89%87.docx?sign=243059ac21dfa98c89a95dba3f061c9f&t=1762152091",
+    "file_id": "cloud://env-xxx/categories/files/1699123456789_vue3-guide.pdf",
     "preview_url": "https://example.com/preview/vue3-guide",
     "images": [
       "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=800&h=600&fit=crop"
+    ],
+    "detail_file_ids": [
+      "cloud://env-xxx/categories/details/1699123456789_0_vue3-guide-1.jpg",
+      "cloud://env-xxx/categories/details/1699123456789_1_vue3-guide-2.jpg"
     ],
     "tags": ["Vue.js", "JavaScript", "前端开发", "TypeScript"],
     "file_type": "pdf",
@@ -35,12 +42,19 @@
     "summary": "完整的移动端UI设计规范，包含常用组件库和设计模板",
     "category_id": "a2352464690763cc01de692659129de4",
     "cover_url": "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop",
+    "cover_file_id": "cloud://env-xxx/categories/covers/1699123456790_ui-design-system.jpg",
     "thumbnail_url": "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=300&h=200&fit=crop",
     "download_url": "https://example.com/files/ui-design-system.sketch",
+    "file_url": "https://example.com/files/ui-design-system.sketch",
+    "file_id": "cloud://env-xxx/categories/files/1699123456790_ui-design-system.sketch",
     "preview_url": "https://example.com/preview/ui-design-system",
     "images": [
       "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&h=600&fit=crop"
+    ],
+    "detail_file_ids": [
+      "cloud://env-xxx/categories/details/1699123456790_0_ui-design-1.jpg",
+      "cloud://env-xxx/categories/details/1699123456790_1_ui-design-2.jpg"
     ],
     "tags": ["UI设计", "设计规范", "组件库", "移动端"],
     "file_type": "sketch",
@@ -63,11 +77,17 @@
     "summary": "从零开始学习Python数据分析，包含pandas、numpy、matplotlib等库的使用",
     "category_id": "def9fa84690763cc01de0a20161409cf",
     "cover_url": "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=800&h=600&fit=crop",
+    "cover_file_id": "cloud://env-xxx/categories/covers/1699123456791_python-data-analysis.jpg",
     "thumbnail_url": "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=300&h=200&fit=crop",
     "download_url": "https://example.com/files/python-data-analysis.pdf",
+    "file_url": "https://example.com/files/python-data-analysis.pdf",
+    "file_id": "cloud://env-xxx/categories/files/1699123456791_python-data-analysis.pdf",
     "preview_url": "https://example.com/preview/python-data-analysis",
     "images": [
       "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=800&h=600&fit=crop"
+    ],
+    "detail_file_ids": [
+      "cloud://env-xxx/categories/details/1699123456791_0_python-data-analysis-1.jpg"
     ],
     "tags": ["Python", "数据分析", "pandas", "numpy", "matplotlib"],
     "file_type": "pdf",
@@ -90,11 +110,17 @@
     "summary": "完整的Figma插件开发工具和模板，快速构建设计工具",
     "category_id": "cc84495d690763cc01dc22fd0f18f94b",
     "cover_url": "https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=800&h=600&fit=crop",
+    "cover_file_id": "cloud://env-xxx/categories/covers/1699123456792_figma-plugin-toolkit.jpg",
     "thumbnail_url": "https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=300&h=200&fit=crop",
     "download_url": "https://example.com/files/figma-plugin-toolkit.zip",
+    "file_url": "https://example.com/files/figma-plugin-toolkit.zip",
+    "file_id": "cloud://env-xxx/categories/files/1699123456792_figma-plugin-toolkit.zip",
     "preview_url": "https://example.com/preview/figma-plugin-toolkit",
     "images": [
       "https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=800&h=600&fit=crop"
+    ],
+    "detail_file_ids": [
+      "cloud://env-xxx/categories/details/1699123456792_0_figma-plugin-toolkit-1.jpg"
     ],
     "tags": ["Figma", "插件开发", "设计工具", "JavaScript"],
     "file_type": "zip",
@@ -117,11 +143,17 @@
     "summary": "包含按钮点击、通知提示、背景音乐等多种音效素材",
     "category_id": "5d261094690763cc01e1dd1b3ca3ad35",
     "cover_url": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
+    "cover_file_id": "cloud://env-xxx/categories/covers/1699123456793_sound-effects-pack.jpg",
     "thumbnail_url": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=200&fit=crop",
     "download_url": "https://example.com/files/sound-effects-pack.zip",
+    "file_url": "https://example.com/files/sound-effects-pack.zip",
+    "file_id": "cloud://env-xxx/categories/files/1699123456793_sound-effects-pack.zip",
     "preview_url": "https://example.com/preview/sound-effects-pack",
     "images": [
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop"
+    ],
+    "detail_file_ids": [
+      "cloud://env-xxx/categories/details/1699123456793_0_sound-effects-pack-1.jpg"
     ],
     "tags": ["音效", "素材", "UI音效", "背景音乐"],
     "file_type": "zip",

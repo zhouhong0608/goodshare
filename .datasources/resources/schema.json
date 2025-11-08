@@ -29,6 +29,11 @@
       "type": "Url"
     },
     {
+      "name": "cover_file_id",
+      "title": "封面文件ID",
+      "type": "String"
+    },
+    {
       "name": "thumbnail_url",
       "title": "缩略图URL",
       "type": "Url"
@@ -37,6 +42,16 @@
       "name": "download_url",
       "title": "下载链接",
       "type": "Url"
+    },
+    {
+      "name": "file_url",
+      "title": "资源文件URL",
+      "type": "Url"
+    },
+    {
+      "name": "file_id",
+      "title": "资源文件ID",
+      "type": "String"
     },
     {
       "name": "preview_url",
@@ -49,6 +64,14 @@
       "type": "Array",
       "items": {
         "type": "Url"
+      }
+    },
+    {
+      "name": "detail_file_ids",
+      "title": "详情文件ID",
+      "type": "Array",
+      "items": {
+        "type": "String"
       }
     },
     {

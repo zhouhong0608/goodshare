@@ -40,7 +40,7 @@ export default function DonationsPage(props) {
     key: 'amount',
     title: '捐赠金额',
     sortable: true,
-    render: amount => `¥${amount}`
+    render: amount => `¥${amount || 0}`
   }, {
     key: 'message',
     title: '留言'
@@ -54,7 +54,7 @@ export default function DonationsPage(props) {
     key: 'created_at',
     title: '捐赠时间',
     sortable: true,
-    render: timestamp => new Date(timestamp).toLocaleString()
+    render: timestamp => timestamp ? new Date(timestamp).toLocaleString() : '-'
   }];
   useEffect(() => {
     loadDonations();
@@ -62,6 +62,7 @@ export default function DonationsPage(props) {
   const loadDonations = async () => {
     setLoading(true);
     try {
+      // 使用数据源API查询donations数据模型
       const result = await $w.cloud.callDataSource({
         dataSourceName: 'donations',
         methodName: 'wedaGetRecordsV2',
@@ -97,6 +98,7 @@ export default function DonationsPage(props) {
   };
   const handleSort = async (key, direction) => {
     try {
+      // 使用数据源API进行排序
       const result = await $w.cloud.callDataSource({
         dataSourceName: 'donations',
         methodName: 'wedaGetRecordsV2',
@@ -104,7 +106,7 @@ export default function DonationsPage(props) {
           select: {
             $master: true
           },
-          getCount: true,
+          getCount: false,
           pageSize: 10,
           pageNumber: 1,
           orderBy: [{

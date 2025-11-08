@@ -150,24 +150,29 @@ export default function ResourcesPage(props) {
   const loadResources = async () => {
     setLoading(true);
     try {
-      // 使用云开发原生实例查询数据库
-      const tcb = await $w.cloud.getCloudInstance();
-      const db = tcb.database();
-      const collection = db.collection('resources');
-
-      // 查询总数
-      const countResult = await collection.count();
-      const total = countResult.total;
-
-      // 查询分页数据
-      const result = await collection.orderBy('created_at', 'desc').skip((pagination.current - 1) * 10).limit(10).get();
-      setResources(result.data || []);
+      // 使用数据源API查询resources数据模型
+      const result = await $w.cloud.callDataSource({
+        dataSourceName: 'resources',
+        methodName: 'wedaGetRecordsV2',
+        params: {
+          select: {
+            $master: true
+          },
+          getCount: true,
+          pageSize: 10,
+          pageNumber: pagination.current,
+          orderBy: [{
+            created_at: 'desc'
+          }]
+        }
+      });
+      setResources(result.records || []);
       setPagination(prev => ({
         ...prev,
-        total: total || 0,
-        pages: Math.ceil((total || 0) / 10),
+        total: result.total || 0,
+        pages: Math.ceil((result.total || 0) / 10),
         start: (pagination.current - 1) * 10 + 1,
-        end: Math.min(pagination.current * 10, total || 0)
+        end: Math.min(pagination.current * 10, result.total || 0)
       }));
     } catch (error) {
       console.error('加载资源数据失败:', error);
@@ -182,11 +187,22 @@ export default function ResourcesPage(props) {
   };
   const loadCategories = async () => {
     try {
-      const tcb = await $w.cloud.getCloudInstance();
-      const db = tcb.database();
-      const collection = db.collection('categories');
-      const result = await collection.orderBy('sort_order', 'asc').get();
-      setCategories(result.data || []);
+      // 使用数据源API查询categories数据模型
+      const result = await $w.cloud.callDataSource({
+        dataSourceName: 'categories',
+        methodName: 'wedaGetRecordsV2',
+        params: {
+          select: {
+            $master: true
+          },
+          getCount: false,
+          pageSize: 100,
+          orderBy: [{
+            sort_order: 'asc'
+          }]
+        }
+      });
+      setCategories(result.records || []);
     } catch (error) {
       console.error('加载分类数据失败:', error);
       toast({
@@ -215,11 +231,23 @@ export default function ResourcesPage(props) {
   };
   const handleSort = async (key, direction) => {
     try {
-      const tcb = await $w.cloud.getCloudInstance();
-      const db = tcb.database();
-      const collection = db.collection('resources');
-      const result = await collection.orderBy(key, direction === 'asc' ? 'asc' : 'desc').limit(10).get();
-      setResources(result.data || []);
+      // 使用数据源API进行排序
+      const result = await $w.cloud.callDataSource({
+        dataSourceName: 'resources',
+        methodName: 'wedaGetRecordsV2',
+        params: {
+          select: {
+            $master: true
+          },
+          getCount: false,
+          pageSize: 10,
+          pageNumber: 1,
+          orderBy: [{
+            [key]: direction === 'asc' ? 'asc' : 'desc'
+          }]
+        }
+      });
+      setResources(result.records || []);
     } catch (error) {
       console.error('排序失败:', error);
       toast({

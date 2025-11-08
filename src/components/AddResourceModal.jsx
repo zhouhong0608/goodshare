@@ -96,10 +96,14 @@ export function AddResourceModal({
   };
   const saveResourceToDatabase = async resourceData => {
     try {
-      const tcb = await $w.cloud.getCloudInstance();
-      const db = tcb.database();
-      const collection = db.collection('resources');
-      const result = await collection.add(resourceData);
+      // 使用数据源API保存到resources数据模型
+      const result = await $w.cloud.callDataSource({
+        dataSourceName: 'resources',
+        methodName: 'wedaCreateV2',
+        params: {
+          data: resourceData
+        }
+      });
       return result.id;
     } catch (error) {
       console.error('保存资源数据失败:', error);
@@ -134,24 +138,26 @@ export function AddResourceModal({
 
       // 上传详情图片
       const detailUrls = [];
+      const detailFileIDs = [];
       for (let i = 0; i < detailImages.length; i++) {
         const detailPath = `${categoryName}/details/${timestamp}_${i}_${detailImages[i].name}`;
         const detailFileID = await uploadToCloudStorage(detailImages[i], detailPath);
         const detailUrl = await getTempFileURL(detailFileID);
         detailUrls.push(detailUrl);
+        detailFileIDs.push(detailFileID);
       }
 
-      // 创建资源记录
+      // 创建资源记录 - 匹配数据模型字段
       const resourceData = {
         title: data.title,
-        description: data.description,
+        description: data.description || '',
         category_id: data.category_id,
         cover_url: coverUrl,
         cover_file_id: coverFileID,
         file_url: resourceUrl,
         file_id: resourceFileID,
         detail_images: detailUrls,
-        detail_file_ids: detailImages.map((_, i) => `${categoryName}/details/${timestamp}_${i}_${detailImages[i].name}`),
+        detail_file_ids: detailFileIDs,
         file_type: data.file_type,
         file_size: data.file_size,
         download_count: 0,

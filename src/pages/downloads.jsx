@@ -45,7 +45,7 @@ export default function DownloadsPage(props) {
     key: 'download_time',
     title: '下载时间',
     sortable: true,
-    render: timestamp => new Date(timestamp).toLocaleString()
+    render: timestamp => timestamp ? new Date(timestamp).toLocaleString() : '-'
   }];
   useEffect(() => {
     loadDownloads();
@@ -53,6 +53,7 @@ export default function DownloadsPage(props) {
   const loadDownloads = async () => {
     setLoading(true);
     try {
+      // 使用数据源API查询downloads数据模型
       const result = await $w.cloud.callDataSource({
         dataSourceName: 'downloads',
         methodName: 'wedaGetRecordsV2',
@@ -88,6 +89,7 @@ export default function DownloadsPage(props) {
   };
   const handleSort = async (key, direction) => {
     try {
+      // 使用数据源API进行排序
       const result = await $w.cloud.callDataSource({
         dataSourceName: 'downloads',
         methodName: 'wedaGetRecordsV2',
@@ -95,7 +97,7 @@ export default function DownloadsPage(props) {
           select: {
             $master: true
           },
-          getCount: true,
+          getCount: false,
           pageSize: 10,
           pageNumber: 1,
           orderBy: [{

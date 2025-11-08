@@ -57,16 +57,18 @@ export default function UsersPage(props) {
   }, {
     key: 'total_downloads',
     title: '下载数',
-    sortable: true
+    sortable: true,
+    render: count => count || 0
   }, {
     key: 'total_donations',
     title: '捐赠数',
-    sortable: true
+    sortable: true,
+    render: count => count || 0
   }, {
     key: 'created_at',
     title: '注册时间',
     sortable: true,
-    render: timestamp => new Date(timestamp).toLocaleDateString()
+    render: timestamp => timestamp ? new Date(timestamp).toLocaleDateString() : '-'
   }];
   useEffect(() => {
     loadUsers();
@@ -74,6 +76,7 @@ export default function UsersPage(props) {
   const loadUsers = async () => {
     setLoading(true);
     try {
+      // 使用数据源API查询users数据模型
       const result = await $w.cloud.callDataSource({
         dataSourceName: 'users',
         methodName: 'wedaGetRecordsV2',
@@ -109,6 +112,7 @@ export default function UsersPage(props) {
   };
   const handleSort = async (key, direction) => {
     try {
+      // 使用数据源API进行排序
       const result = await $w.cloud.callDataSource({
         dataSourceName: 'users',
         methodName: 'wedaGetRecordsV2',
@@ -116,7 +120,7 @@ export default function UsersPage(props) {
           select: {
             $master: true
           },
-          getCount: true,
+          getCount: false,
           pageSize: 10,
           pageNumber: 1,
           orderBy: [{
