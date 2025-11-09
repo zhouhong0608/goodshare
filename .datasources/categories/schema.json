@@ -1,0 +1,43 @@
+
+{
+  "name": "categories",
+  "title": "分类管理",
+  "schemas": [
+    {
+      "name": "name",
+      "title": "分类名称",
+      "type": "String"
+    },
+    {
+      "name": "description",
+      "title": "分类描述",
+      "type": "MultiLineString"
+    },
+    {
+      "name": "icon",
+      "title": "分类图标",
+      "type": "String"
+    },
+    {
+      "name": "is_active",
+      "title": "是否启用",
+      "type": "Boolean"
+    },
+    {
+      "name": "adUnitRewardedDownload",
+      "title": "广告单元ID",
+      "type": "String"
+    },
+    {
+      "name": "sort_order",
+      "title": "排序顺序",
+      "type": "Number"
+    },
+    {
+      "name": "resource_count",
+      "title": "资源数量",
+      "type": "Number"
+    }
+  ]
+}
+  

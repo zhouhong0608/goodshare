@@ -1,0 +1,64 @@
+
+[
+  {
+    "_id": "74337284690763cc01dfbe323f7861bd",
+    "name": "编程开发",
+    "description": "编程语言、开发工具、框架等技术资源",
+    "icon": "code",
+    "is_active": true,
+    "adUnitRewardedDownload": "1111",
+    "sort_order": 1,
+    "resource_count": 0,
+    "created_at": 1762091979836,
+    "updated_at": 1762091979836
+  },
+  {
+    "_id": "a2352464690763cc01de692659129de4",
+    "name": "设计素材",
+    "description": "图标、模板、字体等设计相关资源",
+    "icon": "design",
+    "is_active": true,
+    "adUnitRewardedDownload": "",
+    "sort_order": 2,
+    "resource_count": 0,
+    "created_at": 1762091979836,
+    "updated_at": 1762091979836
+  },
+  {
+    "_id": "def9fa84690763cc01de0a20161409cf",
+    "name": "学习资料",
+    "description": "教程、文档、电子书等学习资源",
+    "icon": "book",
+    "is_active": true,
+    "adUnitRewardedDownload": "",
+    "sort_order": 3,
+    "resource_count": 0,
+    "created_at": 1762091979836,
+    "updated_at": 1762091979836
+  },
+  {
+    "_id": "cc84495d690763cc01dc22fd0f18f94b",
+    "name": "工具软件",
+    "description": "实用工具、软件应用等",
+    "icon": "tool",
+    "is_active": true,
+    "adUnitRewardedDownload": "",
+    "sort_order": 4,
+    "resource_count": 0,
+    "created_at": 1762091979836,
+    "updated_at": 1762091979836
+  },
+  {
+    "_id": "5d261094690763cc01e1dd1b3ca3ad35",
+    "name": "多媒体",
+    "description": "音频、视频、图片等多媒体资源",
+    "icon": "media",
+    "is_active": true,
+    "adUnitRewardedDownload": "",
+    "sort_order": 5,
+    "resource_count": 0,
+    "created_at": 1762091979836,
+    "updated_at": 1762091979836
+  }
+]
+  
