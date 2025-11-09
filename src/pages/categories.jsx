@@ -100,6 +100,7 @@ export default function CategoriesPage(props) {
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState(''); // 状态筛选
   const [pagination, setPagination] = useState({
     current: 1,
     pages: 1,
@@ -153,9 +154,9 @@ export default function CategoriesPage(props) {
     loadCategories();
   }, [pagination.current]);
   useEffect(() => {
-    // 当搜索词或分类数据变化时，执行搜索过滤
-    applySearch();
-  }, [searchTerm, categories]);
+    // 当搜索词、状态筛选或分类数据变化时，执行搜索过滤
+    applyFilters();
+  }, [searchTerm, statusFilter, categories]);
   const loadCategories = async () => {
     setLoading(true);
     try {
@@ -190,25 +191,36 @@ export default function CategoriesPage(props) {
       setLoading(false);
     }
   };
-  const applySearch = () => {
-    if (!searchTerm.trim()) {
-      setFilteredCategories(categories);
-      return;
+  const applyFilters = () => {
+    let filtered = [...categories];
+
+    // 应用搜索过滤
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(category => {
+        // 搜索分类名称
+        const name = (category.name || '').toLowerCase();
+        // 搜索描述
+        const description = (category.description || '').toLowerCase();
+        return name.includes(searchLower) || description.includes(searchLower);
+      });
     }
-    const searchLower = searchTerm.toLowerCase();
-    const filtered = categories.filter(category => {
-      // 搜索分类名称
-      const name = (category.name || '').toLowerCase();
-      // 搜索描述
-      const description = (category.description || '').toLowerCase();
-      // 搜索状态
-      const status = (category.status || '').toLowerCase();
-      return name.includes(searchLower) || description.includes(searchLower) || status.includes(searchLower);
-    });
+
+    // 应用状态筛选
+    if (statusFilter) {
+      filtered = filtered.filter(category => category.status === statusFilter);
+    }
     setFilteredCategories(filtered);
   };
   const handleSearch = value => {
     setSearchTerm(value);
+  };
+  const handleStatusFilter = value => {
+    setStatusFilter(value);
+  };
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setStatusFilter('');
   };
   const handleEdit = category => {
     setEditingCategory(category);
@@ -333,18 +345,26 @@ export default function CategoriesPage(props) {
           </Button>
         </div>
 
-        {/* 搜索栏 */}
+        {/* 搜索和筛选栏 */}
         <div className="bg-white p-4 rounded-lg shadow">
           <div className="flex items-center space-x-4">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <Input type="text" placeholder="搜索分类名称、描述或状态..." value={searchTerm} onChange={e => handleSearch(e.target.value)} className="pl-10" />
+              <Input type="text" placeholder="搜索分类名称或描述..." value={searchTerm} onChange={e => handleSearch(e.target.value)} className="pl-10" />
             </div>
-            {searchTerm && <Button variant="outline" onClick={() => handleSearch('')}>
-                清除搜索
+            
+            {/* 状态筛选 */}
+            <select className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value={statusFilter} onChange={e => handleStatusFilter(e.target.value)}>
+              <option value="">所有状态</option>
+              <option value="active">启用</option>
+              <option value="inactive">禁用</option>
+            </select>
+            
+            {(searchTerm || statusFilter) && <Button variant="outline" onClick={handleClearFilters}>
+                清除筛选
               </Button>}
           </div>
-          {searchTerm && <div className="mt-2 text-sm text-gray-600">
+          {(searchTerm || statusFilter) && <div className="mt-2 text-sm text-gray-600">
               找到 {filteredCategories.length} 个匹配的分类
             </div>}
         </div>
