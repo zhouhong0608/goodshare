@@ -19,6 +19,8 @@ export default function UsersPage(props) {
   const [loading, setLoading] = useState(false);
   const [updatingUserId, setUpdatingUserId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState(''); // 状态筛选
+  const [roleFilter, setRoleFilter] = useState(''); // 角色筛选
   const [pagination, setPagination] = useState({
     current: 1,
     pages: 1,
@@ -87,9 +89,9 @@ export default function UsersPage(props) {
     loadUsers();
   }, [pagination.current]);
   useEffect(() => {
-    // 当搜索词或用户数据变化时，执行搜索过滤
-    applySearch();
-  }, [searchTerm, users]);
+    // 当搜索词、状态筛选、角色筛选或用户数据变化时，执行搜索过滤
+    applyFilters();
+  }, [searchTerm, statusFilter, roleFilter, users]);
   const loadUsers = async () => {
     setLoading(true);
     try {
@@ -124,27 +126,47 @@ export default function UsersPage(props) {
       setLoading(false);
     }
   };
-  const applySearch = () => {
-    if (!searchTerm.trim()) {
-      setFilteredUsers(users);
-      return;
+  const applyFilters = () => {
+    let filtered = [...users];
+
+    // 应用搜索过滤
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(user => {
+        // 搜索昵称
+        const nickName = (user.nickName || user.nickname || '').toLowerCase();
+        // 搜索用户ID
+        const openid = (user.openid || '').toLowerCase();
+        // 搜索邮箱
+        const email = (user.email || '').toLowerCase();
+        return nickName.includes(searchLower) || openid.includes(searchLower) || email.includes(searchLower);
+      });
     }
-    const searchLower = searchTerm.toLowerCase();
-    const filtered = users.filter(user => {
-      // 搜索昵称
-      const nickName = (user.nickName || user.nickname || '').toLowerCase();
-      // 搜索用户ID
-      const openid = (user.openid || '').toLowerCase();
-      // 搜索邮箱
-      const email = (user.email || '').toLowerCase();
-      // 搜索角色
-      const role = (user.role || '').toLowerCase();
-      return nickName.includes(searchLower) || openid.includes(searchLower) || email.includes(searchLower) || role.includes(searchLower);
-    });
+
+    // 应用状态筛选
+    if (statusFilter) {
+      filtered = filtered.filter(user => user.status === statusFilter);
+    }
+
+    // 应用角色筛选
+    if (roleFilter) {
+      filtered = filtered.filter(user => user.role === roleFilter);
+    }
     setFilteredUsers(filtered);
   };
   const handleSearch = value => {
     setSearchTerm(value);
+  };
+  const handleStatusFilter = value => {
+    setStatusFilter(value);
+  };
+  const handleRoleFilter = value => {
+    setRoleFilter(value);
+  };
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setStatusFilter('');
+    setRoleFilter('');
   };
   const toggleUserStatus = async user => {
     setUpdatingUserId(user._id);
@@ -220,18 +242,33 @@ export default function UsersPage(props) {
           <Button>添加用户</Button>
         </div>
 
-        {/* 搜索栏 */}
+        {/* 搜索和筛选栏 */}
         <div className="bg-white p-4 rounded-lg shadow">
           <div className="flex items-center space-x-4">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <Input type="text" placeholder="搜索用户昵称、用户ID、邮箱或角色..." value={searchTerm} onChange={e => handleSearch(e.target.value)} className="pl-10" />
+              <Input type="text" placeholder="搜索用户昵称、用户ID或邮箱..." value={searchTerm} onChange={e => handleSearch(e.target.value)} className="pl-10" />
             </div>
-            {searchTerm && <Button variant="outline" onClick={() => handleSearch('')}>
-                清除搜索
+            
+            {/* 状态筛选 */}
+            <select className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value={statusFilter} onChange={e => handleStatusFilter(e.target.value)}>
+              <option value="">所有状态</option>
+              <option value="active">活跃</option>
+              <option value="inactive">禁用</option>
+            </select>
+            
+            {/* 角色筛选 */}
+            <select className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value={roleFilter} onChange={e => handleRoleFilter(e.target.value)}>
+              <option value="">所有角色</option>
+              <option value="admin">管理员</option>
+              <option value="user">普通用户</option>
+            </select>
+            
+            {(searchTerm || statusFilter || roleFilter) && <Button variant="outline" onClick={handleClearFilters}>
+                清除筛选
               </Button>}
           </div>
-          {searchTerm && <div className="mt-2 text-sm text-gray-600">
+          {(searchTerm || statusFilter || roleFilter) && <div className="mt-2 text-sm text-gray-600">
               找到 {filteredUsers.length} 个匹配的用户
             </div>}
         </div>
