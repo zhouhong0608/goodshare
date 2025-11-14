@@ -62,34 +62,30 @@ export default function DonationsPage(props) {
   const loadDonations = async () => {
     setLoading(true);
     try {
-      // 使用数据源API查询donations数据模型
-      const result = await $w.cloud.callDataSource({
-        dataSourceName: 'donations',
-        methodName: 'wedaGetRecordsV2',
-        params: {
-          select: {
-            $master: true
-          },
-          getCount: true,
-          pageSize: 10,
-          pageNumber: pagination.current,
-          orderBy: [{
-            created_at: 'desc'
-          }]
-        }
-      });
-      setDonations(result.records || []);
+      // 使用云开发原生实例查询数据库
+      const tcb = await $w.cloud.getCloudInstance();
+      const db = tcb.database();
+      const collection = db.collection('donations');
+
+      // 查询总数
+      const countResult = await collection.count();
+      const total = countResult.total;
+
+      // 查询分页数据
+      const result = await collection.orderBy('created_at', 'desc').skip((pagination.current - 1) * 10).limit(10).get();
+      setDonations(result.data || []);
       setPagination(prev => ({
         ...prev,
-        total: result.total || 0,
-        pages: Math.ceil((result.total || 0) / 10),
+        total: total || 0,
+        pages: Math.ceil((total || 0) / 10),
         start: (pagination.current - 1) * 10 + 1,
-        end: Math.min(pagination.current * 10, result.total || 0)
+        end: Math.min(pagination.current * 10, total || 0)
       }));
     } catch (error) {
+      console.error('加载捐赠数据失败:', error);
       toast({
         title: "加载失败",
-        description: error.message,
+        description: error.message || "无法连接到数据库",
         variant: "destructive"
       });
     } finally {
@@ -98,27 +94,17 @@ export default function DonationsPage(props) {
   };
   const handleSort = async (key, direction) => {
     try {
-      // 使用数据源API进行排序
-      const result = await $w.cloud.callDataSource({
-        dataSourceName: 'donations',
-        methodName: 'wedaGetRecordsV2',
-        params: {
-          select: {
-            $master: true
-          },
-          getCount: false,
-          pageSize: 10,
-          pageNumber: 1,
-          orderBy: [{
-            [key]: direction === 'asc' ? 'asc' : 'desc'
-          }]
-        }
-      });
-      setDonations(result.records || []);
+      // 使用云开发原生实例进行排序
+      const tcb = await $w.cloud.getCloudInstance();
+      const db = tcb.database();
+      const collection = db.collection('donations');
+      const result = await collection.orderBy(key, direction === 'asc' ? 'asc' : 'desc').limit(10).get();
+      setDonations(result.data || []);
     } catch (error) {
+      console.error('排序失败:', error);
       toast({
         title: "排序失败",
-        description: error.message,
+        description: error.message || "无法排序数据",
         variant: "destructive"
       });
     }
